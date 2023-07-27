@@ -3,15 +3,27 @@ const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 
+//Conexcion de moongoose
+const {Database} = require("./db/mongoose");
+
+/* Importar rutas necesarias */
+const Auth = require("./routes/Autentication");
+
 /* Instacia de la aplicacion. */
 const app = express();
 
-// Habilitar CORS con las opciones configuradas
+/* Establecer conexión a la base de datos MongoDB*/
+Database();
+
+/* Habilitar CORS con las opciones configuradas */
 app.use(cors());
 
-//recibe y envia datos json
+/* recibe y envia datos json */
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+/*Habilitar rutas necesarias*/
+app.use("/Auth", Auth());
 
 // Se inicia el servidor
 app.listen(process.env.PORT, () => {
