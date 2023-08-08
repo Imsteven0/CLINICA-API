@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const SchemaUser = require("../models/user");
 require("dotenv").config();
 
-exports.Register = async (req, res, next) => {
+exports.Register = async (req, res) => {
     try {
         const {name, email, hashedPassword} = req.body;
 
@@ -34,14 +34,14 @@ exports.Register = async (req, res, next) => {
             }
         );
 
-        res.status(201).json({token: token});
+        res.status(200).json({token: token});
     } catch (err) {
         console.log(err);
         res.status(500).send("Internal server error");
     }
 };
 
-exports.Login = async (req, res, next) => {
+exports.Login = async (req, res) => {
     try {
         const {email, hashedPassword} = req.body;
 
