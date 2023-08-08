@@ -9,6 +9,7 @@ const {Database} = require("./db/mongoose");
 /* Importar rutas necesarias */
 const Auth = require("./routes/Autentication");
 const User = require("./routes/User");
+const Contact = require("./routes/Contact");
 
 /* Instacia de la aplicacion. */
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.urlencoded({extended: true}));
 /*Habilitar rutas necesarias*/
 app.use("/Auth", Auth());
 app.use("/User", User());
+app.use("/Contact", Contact());
 
 // Se inicia el servidor
 app.listen(process.env.PORT, () => {
