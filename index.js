@@ -4,7 +4,7 @@ require("dotenv").config();
 const cors = require("cors");
 
 //Conexcion de moongoose
-const {Database} = require("./db/mongoose");
+const {Database} = require("./DB/mongoose");
 
 /* Importar rutas necesarias */
 const Auth = require("./routes/Autentication");
