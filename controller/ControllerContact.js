@@ -1,6 +1,7 @@
 // Autor: Andy Guzmán Ramírez
 const SchemaContact = require("../models/contact");
 const SchemaUser = require("../models/user");
+const mongoose = require('mongoose');
 require("dotenv").config();
 
 
@@ -12,7 +13,7 @@ exports.AddContact = async (req, res) => {
             res.status(400).send("All input is required");
         }
 
-        const contact =  await SchemaContact.create({
+        const contact = await SchemaContact.create({
             name,
             lastname,
             identification,
@@ -22,12 +23,12 @@ exports.AddContact = async (req, res) => {
         });
 
         await SchemaUser.updateOne({
-            _id:idUser
-        },  
-        {
-            $push: 
-            {idContact:contact._id}
-        });
+                _id: idUser
+            },
+            {
+                $push:
+                    {idContact: contact._id}
+            });
 
         return res.status(200).json({message: "Contacto agregado correctamente"});
     } catch (err) {
@@ -62,3 +63,46 @@ exports.UpdateParamsContact = async (req, res) => {
         return res.status(500).json({message: "Error al actualizar el usuario"});
     }
 };
+
+
+exports.GetContactById = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const user = await SchemaUser.findById(id);
+
+        if (!user) {
+            return res.status(404).json({message: "No se encontró el usuario"});
+        }
+
+        const userIds = [];
+        user.idContact.map((users) => {
+            userIds.push(new mongoose.Types.ObjectId(users));
+        });
+
+        const resultContact = await SchemaContact.find({_id: {$in: userIds}});
+
+        return res.status(200).json(resultContact);
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({message: "Error al obtener el usuario"});
+    }
+}
+
+
+exports.deleteContactById = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const contact = await SchemaContact.findByIdAndDelete(id);
+
+        if (!contact) {
+            return res.status(404).json({message: "No se encontró el contacto"});
+        }
+
+        return res.status(200).json({message: "Contacto eliminado correctamente"});
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({message: "Error al obtener el usuario"});
+    }
+}
