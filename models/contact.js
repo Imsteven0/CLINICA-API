@@ -1,21 +1,16 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const contactSchema = new mongoose.Schema({
     name: String,
     lastname: String,
     identification: String,
-    email: {
+    phone: {
         type: String,
         unique: true
     },
-    image: String,
-    country: String,
-    dateOfBirth: Date,
-    idContact:[{
-        type: String,
-        require: false
-    }],
-    hashedPassword: String,
+    direction: String,
+    relationship:String,
+   
     createdAt: {
         type: Date,
         default: Date.now
@@ -26,4 +21,4 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Contact', contactSchema);
