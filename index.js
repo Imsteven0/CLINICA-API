@@ -4,7 +4,7 @@ require("dotenv").config();
 const cors = require("cors");
 
 //Conexcion de moongoose
-const {Database} = require("./db/mongoose");
+const {Database} = require("./DB/mongoose");
 
 /* Importar rutas necesarias */
 const Auth = require("./routes/Autentication");
@@ -28,6 +28,12 @@ app.use(express.urlencoded({extended: true}));
 app.use("/Auth", Auth());
 app.use("/User", User());
 app.use("/Contact", Contact());
+
+app.use(express.static(__dirname + "/client/build"));
+
+app.get("*", (req, res) => {
+    res.sendFile(__dirname + "/client/build/index.html");
+});
 
 // Se inicia el servidor
 app.listen(process.env.PORT, () => {
